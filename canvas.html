@@ -34,16 +34,46 @@
 		
 
 		// Create a filled rectangle 
-        ctx.fillText("PatrickBlack", 100, 130);
-		ctx.beginPath();
+        ctx.fillText("PatrickBlack", 200, 130);
+		    ctx.beginPath();
         ctx.fillStyle = "rgb(255, 0, 0)";
         ctx.fillRect(20, 20, 150, 100);
-        ctx.fillStyle = "rgb(0, 255, 0)";
-        ctx.fillRect(20, 180, 150, 100);
-        ctx.fillStyle = "rgb(0, 0, 255)";
-        ctx.fillRect(20, 360, 150, 100);
-        
+        ctx.fillStyle = "rgba(0, 255, 0, 40%)";
+        ctx.fillRect(20, 90, 150, 100);
+        ctx.fillStyle = "rgba(0, 0, 255, 40%)";
+        ctx.fillRect(20, 155, 150, 100);
         ctx.stroke();
+        // ctx.arc(350, 75, 50, 0, 2 * Math.PI);
+        
+
+        /* FIRST CIRCLE */
+        ctx.beginPath();
+        ctx.arc(350, 75, 50, 0, 2 * Math.PI);
+        ctx.fillStyle = "#0f9638";
+        ctx.fill();
+        ctx.lineWidth = 6;
+        ctx.strokeStyle = '#1212b5';
+        ctx.stroke();
+
+        /* SECOND CIRCLE */
+        ctx.beginPath();
+        ctx.arc(350, 200, 50, 0, 2 * Math.PI);
+        ctx.fillStyle = "#1212b5";
+        ctx.fill();
+        ctx.lineWidth = 6;
+        ctx.strokeStyle = '#0f9638';
+        ctx.stroke();
+
+        /* SEMI - CIRCLE */
+        ctx.beginPath();
+        ctx.arc(350, 310, 50, 0, Math.PI, false);
+        ctx.closePath();
+        ctx.lineWidth = 6;
+        ctx.fillStyle = '#de140d';
+        ctx.fill();
+        ctx.strokeStyle = '#db0dde';
+        ctx.stroke();
+       
         
         
     </script>
