@@ -16,7 +16,6 @@
 
   <body>
 	<p>This is a paragraph.</p>
-
     <canvas id="canvas-for-ball"></canvas>
 
     <script type="text/javascript">
@@ -24,6 +23,7 @@
       
       // Gets a handle to the element with id canvasOne.
       var canvas = document.getElementById("canvas-for-ball");
+
       // Get a 2D context for the canvas.
       var ctx = canvas.getContext("2d");
       // Make the fill style red.
@@ -32,7 +32,7 @@
       canvas.addEventListener("click", function(event) { 
         ctx.beginPath();
         console.log("Red Circle Appeared on Screen!");
-        ctx.arc(event.clientX, event.clientY, 6, 0, 2 * Math.PI); //changing circle to event.cleintX/Y
+        ctx.arc(event.clientX - 8, event.clientY - 50, 6, 0, 2 * Math.PI); //changing circle to event.cleintX/Y - offset (offsetX = 8) (OffsetY = 50)
         ctx.fill();
         
         noClicks += 1;
