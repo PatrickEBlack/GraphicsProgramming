@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html>
@@ -14,13 +13,15 @@
         }
         body {
             background-color: white;
+            margin: 50px;
         }
         canvas{
-            border: 5px solid red;
+            border: 5px solid blue;
             border-radius: 15px;
         }
         h1{
-            color: green;
+            color: black;
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         }
     </style>
 
@@ -31,48 +32,53 @@
     <canvas id="canvas-for-ball" width="500px" height="500px"></canvas>
 
     <script type="text/javascript">
-      // Gets a handle to the element with id canvasOne.
-      var canvas = document.getElementById("canvas-for-ball");
-      // Get a 2D context for the canvas.
-      var ctx = canvas.getContext("2d");
-      
-      // The vertical location of the ball.
-      var y = 30;
-      var yspeed = 10;
-      var x = 30;
-      var xspeed = 10;
-      // A function to repeat every time the animation loops.
-      function repeatme() {
-        // Draw the ball (stroked, not filled).
-        ctx.beginPath();
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.arc(x, y, 8, 0, 2 * Math.PI);
-        ctx.stroke();
-        
-        // Update the y location.
-        y += yspeed;
-        x += xspeed;
-        if(y >= canvas.height){
-            console.log("Reached the bottom of the screen");
-            yspeed -= 10;
+      const canvas = document.getElementById("canvas-for-ball");
+      const ctx = canvas.getContext("2d");
+
+      class Ball{
+        constructor(x, y, x_velocity, y_velocity, radius, cross_width){
+          this.x = x || 150;
+          this.y = y || 50;
+          this.x_velocity = x_velocity || 2;
+          this.y_velocity = y_velocity || 2;
+          this.radius = radius || 30;
+          this.cross_width = cross_width || 2;
         }
-        if(x >= canvas.width){
-            console.log("Reached the edge of the screen");
-            xspeed -= 10;
-        }
-        if(y <= 0){
-            console.log("Reached the top of the screen");
-            yspeed += 10; 
-        }
-        if(x <= 0){
-            console.log("Reached the edge of the screen");
-            xspeed += 10;
-        }
-        
+          draw(){
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+            ctx.strokeStyle = 'red';
+            ctx.stroke();
+
+            //Cross In Center        
+            ctx.fillStyle = 'red';
+            ctx.fillRect(this.x - this.radius, this.y-(this.cross_width/2), this.radius*2, 2);
+            ctx.fillRect(this.x-(this.cross_width/2), this.y - this.radius, 2, this.radius*2);
+            ctx.stroke();
+          }
+          move(){
+            this.x += this.x_velocity;
+            this.y += this.y_velocity; 
+
+            if(this.y >= canvas.height - this.radius || this.y <= this.radius){
+              console.log("Hit the Roof/Floor!");
+              this.y_velocity *= -1;
+            }  
+            if(this.x >= canvas.width - this.radius || this.x <= this.radius){
+              console.log("Hit the Side Wall!");
+              this.x_velocity *= -1;
+            }   
+          }
+      }
+
+      function repeatme(){
+        ctx.clearRect(0, 0, canvas.width, canvas.height); //Clears the canvas
+        b1.draw();
+        b1.move();
         window.requestAnimationFrame(repeatme);
       }
       
-      // Get the animation going.
+      const b1 = new Ball();
       repeatme();
     </script>
 
