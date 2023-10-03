@@ -8,46 +8,87 @@
     <title>Canvas</title>
 
     <style type="text/css">
-		canvas {
-			border: 1px solid grey; 
+		body{
+			margin: 50px;
+			margin-top: 50px;
 		}
+		canvas {
+			border: 2px solid black; 
+			border-radius: 15px;
+		}
+	
     </style>
 
   </head>
 
   <body>
-
-    <canvas id="canvas-for-ball"></canvas>
+	<h1>Patrick Black</h1>
+    <canvas id="canvas-for-ball" width="500px" height="700px"></canvas>
 
     <script type="text/javascript">
-		// Gets a handle to the element with id canvasOne.
+
 		var canvas = document.getElementById("canvas-for-ball");
-		// Get a 2D context for the canvas.
 		var ctx = canvas.getContext("2d");
-		// Make the fill style red.
 		ctx.fillStyle = "rgb(255, 0, 0)";
 
-		// Add a Javascript event listener to the keypress event.
-		window.addEventListener("keypress", function(event) { 
-			// Just log the event to the console.
-			console.log(event);
-		});
+		let x = 10;
+		let y = 10;
+		let vx = 0;
+		let vy = 0;
 
-		//keypresses with jQuery
-		$(document.body).on('keydown', function(e) {
-			console.log(e.which);
-			switch (e.which) {
-			// key code for left arrow
-			case 37:
-				console.log('left arrow key pressed!');
-				break;
-
-			// key code for right arrow
-			case 39:
-				console.log('right arrow key pressed!');
-				break;
+		function update(){
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			x += vx;
+			y += vy;
+			ctx.fillRect(x, y, 50, 50)
+			
+			if(x >= canvas.width*0.91){
+				console.log("edge of screen");
+				vx = 0;
+				x = canvas.width*.91;
 			}
-		});
+			if(x <= 0){
+				console.log("edge of screen");
+				vx = 0;
+				x = 0;
+			}
+			if(y >= canvas.height*.93){
+				console.log("bottom of screen");
+				vy = 0;
+				y = canvas.height*.93;
+			}
+			if(y <= 0){
+				console.log("top of screen");
+				vy = 0;
+				y = 0;
+			}
+			requestAnimationFrame(update)
+		}
+		update()
+
+		addEventListener("keydown", function(e){
+			if(e.code == "ArrowLeft") {
+				vx = -5;
+			}
+			if(e.code == "ArrowRight") {
+				vx = +5;
+			}
+			if(e.code == "ArrowUp") {
+				vy = -5;
+			} 
+			if(e.code == "ArrowDown") {
+				vy = +5;
+			}
+			//console.log(e.code);
+		})
+		addEventListener("keyup", function(e){
+			if(e.code == "ArrowLeft" || e.code == "ArrowRight") {
+				vx = 0;
+			}
+			if(e.code == "ArrowUp" || e.code == "ArrowDown") {
+				vy = 0;
+			}
+		})
     </script>
 
   </body>
