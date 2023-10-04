@@ -37,10 +37,10 @@
 
       class Ball{
         constructor(x, y, x_velocity, y_velocity, radius, cross_width){
-          this.x = x || 150;                        //
-          this.y = y || 50;                         //
-          this.x_velocity = x_velocity || 2;        //  Variable initialization
-          this.y_velocity = y_velocity || 2;        //
+          this.x = x || 50;                        //
+          this.y = y || 150;                         //
+          this.x_velocity = x_velocity ||0;        //  Variable initialization
+          this.y_velocity = y_velocity ||0;        //
           this.radius = radius || 30;               //
           this.cross_width = cross_width || 2;      //
         }
@@ -51,14 +51,37 @@
             ctx.stroke();
 
             //Cross In Center        
-            ctx.fillStyle = 'red';
-            ctx.fillRect(this.x - this.radius, this.y-(this.cross_width/2), this.radius*2, 2);
-            ctx.fillRect(this.x-(this.cross_width/2), this.y - this.radius, 2, this.radius*2);
+            var angle1 = (Math.PI/4 * 1); //0.1 is how much the line will move clockwise (don't forget to delete semicolon)
+            var angle2 = (Math.PI/4 * -3);
+            var angle3 = (Math.PI/4 * -1);
+            var angle4 = (Math.PI/4 * 3); 
+
+            //Determining where the lines should be placed within the circle
+            var xOC = (this.radius * Math.cos(angle1) + this.x);
+            var yOC = (this.radius * Math.sin(angle1) + this.y);
+            var xOV = (this.radius * Math.cos(angle2) + this.x);
+            var yOV = (this.radius * Math.sin(angle2) + this.y);
+            var xOX = (this.radius * Math.cos(angle3) + this.x);
+            var yOX = (this.radius * Math.sin(angle3) + this.y);
+            var xOZ = (this.radius * Math.cos(angle4) + this.x);
+            var yOZ = (this.radius * Math.sin(angle4) + this.y);
+           
+            //Drawing Lines on The circle
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(xOC, yOC);
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(xOV, yOV);
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(xOX, yOX);
+            ctx.moveTo(this.x, this.y);
+            ctx.lineTo(xOZ, yOZ);
+
             ctx.stroke();
           }
           move(){
             this.x += this.x_velocity; //generating speed
             this.y += this.y_velocity; //generating speed
+            //this.y_velocity += 0.5;
 
             if(this.y >= canvas.height - this.radius || this.y <= this.radius){
               console.log("Hit the Roof/Floor!"); //Console log prompt showing when the ball hits the roof/floor
@@ -67,7 +90,7 @@
             if(this.x >= canvas.width - this.radius || this.x <= this.radius){
               console.log("Hit the Side Wall!"); //Console log prompt showing when the ball hits the Side Wall
               this.x_velocity *= -1;
-            }   
+            }  
           }
       }
 
@@ -77,7 +100,7 @@
         b1.move(); //Calls move method
         window.requestAnimationFrame(repeatme);
       }
-      
+     
       const b1 = new Ball(); //Creating Ball object
       repeatme(); //Calls the repeatMe function
     </script>
