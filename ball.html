@@ -36,45 +36,48 @@
       const ctx = canvas.getContext("2d");
 
       class Ball{
-        constructor(x, y, x_velocity, y_velocity, radius, cross_width){
+        constructor(x, y, x_velocity, y_velocity, radius, angle1, angle2, angle3, angle4){
           this.x = x || 50;                        //
-          this.y = y || 150;                         //
-          this.x_velocity = x_velocity ||0;        //  Variable initialization
-          this.y_velocity = y_velocity ||0;        //
-          this.radius = radius || 30;               //
-          this.cross_width = cross_width || 2;      //
-        }
+          this.y = y || 150;                       //
+          this.x_velocity = x_velocity ||2;        //  
+          this.y_velocity = y_velocity ||2;        //
+          this.radius = radius || 30;              // Variable initialization
+          this.angle1 = angle1 || (Math.PI/4 * 1); //
+          this.angle2 = angle2 || (Math.PI/4 * -3);//
+          this.angle3 = angle3 || (Math.PI/4 * -1);//
+          this.angle4 = angle4 || (Math.PI/4 * 3); //
+          }
           draw(){
             ctx.beginPath(); //creating circle
             ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
             ctx.strokeStyle = 'red';
             ctx.stroke();
 
-            //Cross In Center        
-            var angle1 = (Math.PI/4 * 1); //0.1 is how much the line will move clockwise (don't forget to delete semicolon)
-            var angle2 = (Math.PI/4 * -3);
-            var angle3 = (Math.PI/4 * -1);
-            var angle4 = (Math.PI/4 * 3); 
-
             //Determining where the lines should be placed within the circle
-            var xOC = (this.radius * Math.cos(angle1) + this.x);
-            var yOC = (this.radius * Math.sin(angle1) + this.y);
-            var xOV = (this.radius * Math.cos(angle2) + this.x);
-            var yOV = (this.radius * Math.sin(angle2) + this.y);
-            var xOX = (this.radius * Math.cos(angle3) + this.x);
-            var yOX = (this.radius * Math.sin(angle3) + this.y);
-            var xOZ = (this.radius * Math.cos(angle4) + this.x);
-            var yOZ = (this.radius * Math.sin(angle4) + this.y);
+            var xOC = (this.radius * Math.cos(this.angle1) + this.x);
+            var yOC = (this.radius * Math.sin(this.angle1) + this.y);
+            var xOV = (this.radius * Math.cos(this.angle2) + this.x);
+            var yOV = (this.radius * Math.sin(this.angle2) + this.y);
+            var xOX = (this.radius * Math.cos(this.angle3) + this.x);
+            var yOX = (this.radius * Math.sin(this.angle3) + this.y);
+            var xOZ = (this.radius * Math.cos(this.angle4) + this.x);
+            var yOZ = (this.radius * Math.sin(this.angle4) + this.y);
+
+            //Updating angle every time ball is drawn, giving illusion of spinning
+            this.angle1 += 0.05;
+            this.angle2 += 0.05;
+            this.angle3 += 0.05;
+            this.angle4 += 0.05;
            
             //Drawing Lines on The circle
             ctx.moveTo(this.x, this.y);
-            ctx.lineTo(xOC, yOC);
+            ctx.lineTo(xOC, yOC); // Angle1
             ctx.moveTo(this.x, this.y);
-            ctx.lineTo(xOV, yOV);
+            ctx.lineTo(xOV, yOV); // Angle2
             ctx.moveTo(this.x, this.y);
-            ctx.lineTo(xOX, yOX);
+            ctx.lineTo(xOX, yOX); // Angle3
             ctx.moveTo(this.x, this.y);
-            ctx.lineTo(xOZ, yOZ);
+            ctx.lineTo(xOZ, yOZ); // Angle4
 
             ctx.stroke();
           }
