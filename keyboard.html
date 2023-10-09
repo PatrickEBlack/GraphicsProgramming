@@ -23,7 +23,7 @@
 
   <body>
 	<h1>Patrick Black</h1>
-    <canvas id="canvas-for-ball" width="500px" height="700px"></canvas>
+    <canvas id="canvas-for-ball" width="1000px" height="700px"></canvas>
 
     <script type="text/javascript">
 
@@ -31,10 +31,20 @@
 		var ctx = canvas.getContext("2d");
 		ctx.fillStyle = "rgb(255, 0, 0)";
 
-		let x = 10;
-		let y = 10;
-		let vx = 0;
-		let vy = 0;
+		class Paddles{
+			constructor(x, y, vx, vy){
+				this.x = x || canvas.width-150;
+				this.y = y || (canvas.height/2)-50;
+				this.vx = vx || 0;
+				this.vy = vy || 0;
+			}
+			draw(){
+
+			}
+			move(){
+
+			}
+		}
 
 		function update(){
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -42,20 +52,20 @@
 			y += vy;
 			ctx.fillRect(x, y, 50, 50)
 			
-			if(x >= canvas.width*0.91){
+			if(x >= canvas.width-50){
 				console.log("edge of screen");
 				vx = 0;
-				x = canvas.width*.91;
+				x = (canvas.width-50);
 			}
 			if(x <= 0){
 				console.log("edge of screen");
 				vx = 0;
 				x = 0;
 			}
-			if(y >= canvas.height*.93){
+			if(y >= canvas.height-50){
 				console.log("bottom of screen");
 				vy = 0;
-				y = canvas.height*.93;
+				y = (canvas.height-50);
 			}
 			if(y <= 0){
 				console.log("top of screen");
@@ -67,12 +77,12 @@
 		update()
 
 		addEventListener("keydown", function(e){
-			if(e.code == "ArrowLeft") {
-				vx = -5;
-			}
-			if(e.code == "ArrowRight") {
-				vx = +5;
-			}
+			// if(e.code == "ArrowLeft") {
+			// 	vx = -5;
+			// }									//Removing Left & Right stops player from moving paddle left and right
+			// if(e.code == "ArrowRight") {
+			// 	vx = +5;
+			// }
 			if(e.code == "ArrowUp") {
 				vy = -5;
 			} 
