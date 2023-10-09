@@ -30,20 +30,18 @@
       const ctx = canvas.getContext("2d");
 
       class Ball{
-        constructor(x, y, x_velocity, y_velocity, radius, angle1, angle2, angle3, angle4, angle1_vel, angle2_vel, angle3_vel, angle4_vel){
-          this.x = x || 50;                        //
-          this.y = y || 150;                       //
+        constructor(x, y, x_velocity, y_velocity, radius, angle1, angle2, angle3, angle4, angle_vel){
+          this.x = x || 50;                         //
+          this.y = y || 150;                        //
           this.x_velocity = x_velocity || 2;        //  
           this.y_velocity = y_velocity || 2;        //
-          this.radius = radius || 30;              // Variable initialization
-          this.angle1 = angle1 || (Math.PI/4 * 1); //
-          this.angle2 = angle2 || (Math.PI/4 * -3);//
-          this.angle3 = angle3 || (Math.PI/4 * -1);//
-          this.angle4 = angle4 || (Math.PI/4 * 3); //
-          this.angle1_vel = angle1_vel || 0.05;
-          this.angle2_vel = angle2_vel || 0.05;
-          this.angle3_vel = angle3_vel || 0.05;
-          this.angle4_vel = angle4_vel || 0.05;
+          this.radius = radius || 30;               // Variable initialization
+          this.angle1 = angle1 || (Math.PI/4 * 1);  //
+          this.angle2 = angle2 || (Math.PI/4 * -3); //
+          this.angle3 = angle3 || (Math.PI/4 * -1); //
+          this.angle4 = angle4 || (Math.PI/4 * 3);  //
+          this.angle_vel = angle_vel || 0.05;       //
+
           }
           draw(){
             ctx.beginPath(); //creating circle
@@ -60,12 +58,6 @@
             var xOZ = (this.radius * Math.cos(this.angle4) + this.x);
             var yOZ = (this.radius * Math.sin(this.angle4) + this.y);
 
-            //Updating angle every time ball is drawn, giving illusion of spinning
-            // this.angle1 -= 0.05;
-            // this.angle2 -= 0.05;
-            // this.angle3 -= 0.05;
-            // this.angle4 -= 0.05;
-
             //Drawing Lines on The circle
             ctx.moveTo(this.x, this.y);
             ctx.lineTo(xOC, yOC); // Angle1
@@ -80,27 +72,21 @@
           move(){
             this.x += this.x_velocity; //generating speed
             this.y += this.y_velocity; //generating speed
-            this.angle1 += this. angle1_vel;
-            this.angle2 += this. angle2_vel;
-            this.angle3 += this. angle3_vel;
-            this.angle4 += this. angle4_vel;
+            this.angle1 += this. angle_vel;
+            this.angle2 += this. angle_vel;
+            this.angle3 += this. angle_vel;
+            this.angle4 += this. angle_vel;
             //this.y_velocity += 0.5;
 
             if(this.y >= canvas.height - this.radius || this.y <= this.radius){
               console.log("Hit the Roof/Floor!"); //Console log prompt showing when the ball hits the roof/floor
               this.y_velocity *= -1;
-              this.angle1_vel *= -1;
-              this.angle2_vel *= -1;
-              this.angle3_vel *= -1;
-              this.angle4_vel *= -1;
+              this.angle_vel *= -1;
             }  
             if(this.x >= canvas.width - this.radius || this.x <= this.radius){
               console.log("Hit the Side Wall!"); //Console log prompt showing when the ball hits the Side Wall
               this.x_velocity *= -1;
-              this.angle1_vel *= -1;
-              this.angle2_vel *= -1;
-              this.angle3_vel *= -1;
-              this.angle4_vel *= -1;
+              this.angle_vel *= -1;
             }  
           }
       }
