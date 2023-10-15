@@ -1,106 +1,110 @@
 <!DOCTYPE html>
-
-<html>
-
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-  <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
-    <title>Canvas</title>
-
-    <style type="text/css">
-		body{
-			margin: 50px;
-			margin-top: 50px;
-		}
-		canvas {
-			border: 2px solid black; 
-			border-radius: 15px;
-		}
-	
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        canvas{
+            border: 2px solid blue;
+            border-radius: 15px;
+            margin: 50px;
+        }
     </style>
+    <title>Lab_3</title>
+</head>
+<body>
+    <canvas id="canvas-for-paddles" width="500px" height="500px"></canvas>
+    <script>
+        const canvas = document.getElementById("canvas-for-paddles"); //Creating Canvas
+        const ctx = canvas.getContext("2d");
 
-  </head>
+        class Paddles{
+            constructor(x, y, x_velocity, y_velocity){
+                this.x = x || 450;
+                this.y = y || 250;
+                this.x_velocity = x_velocity || 2; 
+                this.y_velocity = y_velocity || 2;
+            }
+            draw(){
+                ctx.beginPath();
+                ctx.fillRect(this.x, this.y-40, 20, 80);
+                ctx.stroke();
+            }
+            move(){
 
-  <body>
-	<h1>Patrick Black</h1>
-    <canvas id="canvas-for-ball" width="1000px" height="700px"></canvas>
+            }
+        }
+        class Ball{
+            constructor(x, y, x_velocity, y_velocity, radius, angle1, angle2, angle3, angle4, angle_vel){
+                this.x = x || 250;
+                this.y = y || 250;
+                this.x_velocity = x_velocity || 0;
+                this.y_velocity = y_velocity || 2;
+                this.radius = radius || 20;
+                this.angle1 = angle1 || (Math.PI/4 * 1);  
+                this.angle2 = angle2 || (Math.PI/4 * -3); 
+                this.angle3 = angle3 || (Math.PI/4 * -1); 
+                this.angle4 = angle4 || (Math.PI/4 * 3);                 
+                this.angle_vel = angle_vel || 0.05; 
+            }
+            draw(){
+                console.log("Ball_Draw called!");
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+                ctx.strokeStyle = 'red';
+                ctx.stroke();
+                //Determining where the lines should be placed on the cirlce
+                var xOC = (this.radius * Math.cos(this.angle1) + this.x);
+                var yOC = (this.radius * Math.sin(this.angle1) + this.y);
+                var xOV = (this.radius * Math.cos(this.angle2) + this.x);
+                var yOV = (this.radius * Math.sin(this.angle2) + this.y);
+                var xOX = (this.radius * Math.cos(this.angle3) + this.x);
+                var yOX = (this.radius * Math.sin(this.angle3) + this.y);
+                var xOZ = (this.radius * Math.cos(this.angle4) + this.x);
+                var yOZ = (this.radius * Math.sin(this.angle4) + this.y);
+                //Drawing the Lines on the circle
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(xOC, yOC); // Angle1
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(xOV, yOV); // Angle2
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(xOX, yOX); // Angle3
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(xOZ, yOZ); // Angle4
+                ctx.stroke();
+            }
+            move(){
+                this.x += this.x_velocity; //generating speed
+                this.y += this.y_velocity; //generating speed
+                this.angle1 += this. angle_vel;
+                this.angle2 += this. angle_vel;
+                this.angle3 += this. angle_vel;
+                this.angle4 += this. angle_vel;
 
-    <script type="text/javascript">
+                if(this.y >= canvas.height - this.radius || this.y <= this.radius){
+                  console.log("Hit the Roof/Floor!"); //Console log prompt showing when the ball hits the roof/floor
+                  this.y_velocity *= -1;
+                  this.angle_vel *= -1;
+                }  
+                if(this.x >= canvas.width - this.radius || this.x <= this.radius){
+                    console.log("Hit the Side Wall!"); //Console log prompt showing when the ball hits the Side Wall
+                    this.x_velocity *= -1;
+                    this.angle_vel *= -1;
+                }  
+            }
+        }
+        function repeatme(){
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            p1.draw();
+            p1.move();
+            b1.draw();
+            b1.move();
 
-		var canvas = document.getElementById("canvas-for-ball");
-		var ctx = canvas.getContext("2d");
-		ctx.fillStyle = "rgb(255, 0, 0)";
-
-		class Paddles{
-			constructor(x, y, vx, vy){
-				this.x = x || canvas.width-150;
-				this.y = y || (canvas.height/2)-50;
-				this.vx = vx || 0;
-				this.vy = vy || 0;
-			}
-			draw(){
-
-			}
-			move(){
-
-			}
-		}
-
-		function update(){
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
-			x += vx;
-			y += vy;
-			ctx.fillRect(x, y, 50, 50)
-			
-			if(x >= canvas.width-50){
-				console.log("edge of screen");
-				vx = 0;
-				x = (canvas.width-50);
-			}
-			if(x <= 0){
-				console.log("edge of screen");
-				vx = 0;
-				x = 0;
-			}
-			if(y >= canvas.height-50){
-				console.log("bottom of screen");
-				vy = 0;
-				y = (canvas.height-50);
-			}
-			if(y <= 0){
-				console.log("top of screen");
-				vy = 0;
-				y = 0;
-			}
-			requestAnimationFrame(update)
-		}
-		update()
-
-		addEventListener("keydown", function(e){
-			// if(e.code == "ArrowLeft") {
-			// 	vx = -5;
-			// }									//Removing Left & Right stops player from moving paddle left and right
-			// if(e.code == "ArrowRight") {
-			// 	vx = +5;
-			// }
-			if(e.code == "ArrowUp") {
-				vy = -5;
-			} 
-			if(e.code == "ArrowDown") {
-				vy = +5;
-			}
-			//console.log(e.code);
-		})
-		addEventListener("keyup", function(e){
-			if(e.code == "ArrowLeft" || e.code == "ArrowRight") {
-				vx = 0;
-			}
-			if(e.code == "ArrowUp" || e.code == "ArrowDown") {
-				vy = 0;
-			}
-		})
+            window.requestAnimationFrame(repeatme);
+        }
+        const p1 = new Paddles();
+        const b1 = new Ball();
+        repeatme();
     </script>
-
-  </body>
-
+</body>
 </html>
