@@ -18,13 +18,18 @@
         const canvas = document.getElementById("canvas-for-paddles"); //Creating Canvas
         const ctx = canvas.getContext("2d");
 
-        //Key movement
+        //Event listener for key press
         window.addEventListener("keypress", doKeyDown, false);
 
         function doKeyDown(e){
             const key = e.key;
+            //Movement keys for Player Two
             if(key == "w" && paddleTwo.y-paddleTwo.gravity > 0) paddleTwo.y -= paddleTwo.gravity * 4;
             else if(key == "s" && paddleTwo.y + paddleTwo.height + paddleTwo.gravity < canvas.height) paddleTwo.y += paddleTwo.gravity * 4;
+
+            //Movement keys for Player One
+            if(key == "i" && paddleOne.y-paddleOne.gravity > 0) paddleOne.y -= paddleOne.gravity * 4;
+            else if(key == "k" && paddleOne.y + paddleOne.height + paddleOne.gravity < canvas.height) paddleOne.y += paddleOne.gravity * 4;
         }
 
         class Element{
