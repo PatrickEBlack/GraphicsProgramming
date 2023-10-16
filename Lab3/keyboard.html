@@ -21,17 +21,6 @@
         //Event listener for key press
         window.addEventListener("keypress", doKeyDown, false);
 
-        function doKeyDown(e){
-            const key = e.key;
-            //Movement keys for Player Two
-            if(key == "w" && paddleTwo.y-paddleTwo.gravity > 0) paddleTwo.y -= paddleTwo.gravity * 4;
-            else if(key == "s" && paddleTwo.y + paddleTwo.height + paddleTwo.gravity < canvas.height) paddleTwo.y += paddleTwo.gravity * 4;
-
-            //Movement keys for Player One
-            if(key == "i" && paddleOne.y-paddleOne.gravity > 0) paddleOne.y -= paddleOne.gravity * 4;
-            else if(key == "k" && paddleOne.y + paddleOne.height + paddleOne.gravity < canvas.height) paddleOne.y += paddleOne.gravity * 4;
-        }
-
         class Element{
             constructor(options){
                 this.x = options.x;
@@ -126,8 +115,19 @@
                     }
                     if(Math.abs(this.y_velocity)<1.1)this.y_velocity = 0;
                     this.angle_vel *= -1;
-                }   
+                } 
             }
+        }
+
+        function doKeyDown(e){
+            const key = e.key;
+            //Movement keys for Player Two
+            if(key == "w" && paddleTwo.y-paddleTwo.gravity > 0) paddleTwo.y -= paddleTwo.gravity * 4;
+            else if(key == "s" && paddleTwo.y + paddleTwo.height + paddleTwo.gravity < canvas.height) paddleTwo.y += paddleTwo.gravity * 4;
+
+            //Movement keys for Player One
+            if(key == "i" && paddleOne.y-paddleOne.gravity > 0) paddleOne.y -= paddleOne.gravity * 4;
+            else if(key == "k" && paddleOne.y + paddleOne.height + paddleOne.gravity < canvas.height) paddleOne.y += paddleOne.gravity * 4;
         }
 
         function drawElement(element){
@@ -146,7 +146,9 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             b1.draw();
             b1.move();
+
             drawElements();
+    
             window.requestAnimationFrame(repeatme);
         }
         const b1 = new Ball();
