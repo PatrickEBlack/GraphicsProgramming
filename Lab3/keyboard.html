@@ -18,22 +18,34 @@
         const canvas = document.getElementById("canvas-for-paddles"); //Creating Canvas
         const ctx = canvas.getContext("2d");
 
-        class Paddles{
-            constructor(x, y, x_velocity, y_velocity){
-                this.x = x || 450;
-                this.y = y || 250;
-                this.x_velocity = x_velocity || 2; 
-                this.y_velocity = y_velocity || 2;
-            }
-            draw(){
-                ctx.beginPath();
-                ctx.fillRect(this.x, this.y-40, 20, 80);
-                ctx.stroke();
-            }
-            move(){
-
+        class Element{
+            constructor(options){
+                this.x = options.x;
+                this.y = options.y;
+                this.width = options.width;
+                this.height = options.height;
+                this.color = options.color;
+                this.speed = options.speed;
+                this.gravity = options.gravity;
             }
         }
+        const paddleOne = new Element({
+            x: 450,
+            y: 230,
+            width: 15,
+            height: 80,
+            color: "#2980B9",
+            gravity: 2,
+        });
+        const paddleTwo = new Element({
+            x: 20,
+            y: 230,
+            width: 15,
+            height: 80,
+            color: "#2980B9",
+            gravity: 2,
+        });
+
         class Ball{
             constructor(x, y, x_velocity, y_velocity, radius, angle1, angle2, angle3, angle4, angle_vel, gravity, bounce){
                 this.x = x || 250;
@@ -46,8 +58,8 @@
                 this.angle3 = angle3 || (Math.PI/4 * -1); 
                 this.angle4 = angle4 || (Math.PI/4 * 3);                 
                 this.angle_vel = angle_vel || 0.05; 
-                this.gravity = gravity || 0.05;
-                this.bounce = bounce || 0.9;
+                this.gravity = gravity || 0.05; // Slows down the fall for
+                this.bounce = bounce || 0.9; // Ball will only bounce back to 90% of its previous height
             }
             draw(){
                 console.log("Ball_Draw called!");
@@ -100,16 +112,27 @@
                 }   
             }
         }
+
+        function drawElement(element){
+            ctx.fillStyle = "#2980B9";
+            ctx.fillRect(element.x, element.y, element.width, element.height);
+        }
+
+        function drawElements(){
+            console.log("Drawn elements!");
+            // ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawElement(paddleOne);
+            drawElement(paddleTwo);
+        }
+
         function repeatme(){
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            p1.draw();
-            p1.move();
             b1.draw();
             b1.move();
-
+            drawElements();
             window.requestAnimationFrame(repeatme);
+           
         }
-        const p1 = new Paddles();
         const b1 = new Ball();
         repeatme();
     </script>
