@@ -57,14 +57,14 @@
                 this.x = x || 250;
                 this.y = y || 250;
                 this.x_velocity = x_velocity || 0;
-                this.y_velocity = y_velocity || 1;
+                this.y_velocity = y_velocity || 3;
                 this.radius = radius || 20;
                 this.angle1 = angle1 || (Math.PI/4 * 1);  
                 this.angle2 = angle2 || (Math.PI/4 * -3); 
                 this.angle3 = angle3 || (Math.PI/4 * -1); 
                 this.angle4 = angle4 || (Math.PI/4 * 3);                 
                 this.angle_vel = angle_vel || 0.05; 
-                this.gravity = gravity || 0.05; // Slows down the fall for
+                this.gravity = gravity || 0.1; // Slows down the fall for
                 this.bounce = bounce || 0.9; // Ball will only bounce back to 90% of its previous height
             }
             draw(){
