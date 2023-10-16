@@ -35,17 +35,19 @@
             }
         }
         class Ball{
-            constructor(x, y, x_velocity, y_velocity, radius, angle1, angle2, angle3, angle4, angle_vel){
+            constructor(x, y, x_velocity, y_velocity, radius, angle1, angle2, angle3, angle4, angle_vel, gravity, bounce){
                 this.x = x || 250;
                 this.y = y || 250;
                 this.x_velocity = x_velocity || 0;
-                this.y_velocity = y_velocity || 2;
+                this.y_velocity = y_velocity || 1;
                 this.radius = radius || 20;
                 this.angle1 = angle1 || (Math.PI/4 * 1);  
                 this.angle2 = angle2 || (Math.PI/4 * -3); 
                 this.angle3 = angle3 || (Math.PI/4 * -1); 
                 this.angle4 = angle4 || (Math.PI/4 * 3);                 
                 this.angle_vel = angle_vel || 0.05; 
+                this.gravity = gravity || 0.05;
+                this.bounce = bounce || 0.9;
             }
             draw(){
                 console.log("Ball_Draw called!");
@@ -74,23 +76,28 @@
                 ctx.stroke();
             }
             move(){
-                this.x += this.x_velocity; //generating speed
+                //this.x += this.x_velocity; //generating speed
                 this.y += this.y_velocity; //generating speed
+                this.y_velocity += this.gravity;
                 this.angle1 += this. angle_vel;
                 this.angle2 += this. angle_vel;
                 this.angle3 += this. angle_vel;
                 this.angle4 += this. angle_vel;
 
                 if(this.y >= canvas.height - this.radius || this.y <= this.radius){
-                  console.log("Hit the Roof/Floor!"); //Console log prompt showing when the ball hits the roof/floor
-                  this.y_velocity *= -1;
-                  this.angle_vel *= -1;
-                }  
-                if(this.x >= canvas.width - this.radius || this.x <= this.radius){
-                    console.log("Hit the Side Wall!"); //Console log prompt showing when the ball hits the Side Wall
-                    this.x_velocity *= -1;
+                    console.log("Hit the Roof/Floor!"); //Console log prompt showing when the ball hits the roof/floor
+                    this.y_velocity *= -this.bounce;
+                    if(this.y_velocity < 0 && this.y_velocity > -2.1){
+                        this.y_velocity = 0;
+                        
+                        if(this.y_velocity <= 0.1){
+                            this.x_velocity = 0; 
+                            this.angle_vel = 0; 
+                        }
+                    }
+                    if(Math.abs(this.y_velocity)<1.1)this.y_velocity = 0;
                     this.angle_vel *= -1;
-                }  
+                }   
             }
         }
         function repeatme(){
