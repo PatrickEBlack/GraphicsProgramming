@@ -18,6 +18,15 @@
         const canvas = document.getElementById("canvas-for-paddles"); //Creating Canvas
         const ctx = canvas.getContext("2d");
 
+        //Key movement
+        window.addEventListener("keypress", doKeyDown, false);
+
+        function doKeyDown(e){
+            const key = e.key;
+            if(key == "w" && paddleTwo.y-paddleTwo.gravity > 0) paddleTwo.y -= paddleTwo.gravity * 4;
+            else if(key == "s" && paddleTwo.y + paddleTwo.height + paddleTwo.gravity < canvas.height) paddleTwo.y += paddleTwo.gravity * 4;
+        }
+
         class Element{
             constructor(options){
                 this.x = options.x;
@@ -29,6 +38,7 @@
                 this.gravity = options.gravity;
             }
         }
+        //Paddle One
         const paddleOne = new Element({
             x: 450,
             y: 230,
@@ -37,6 +47,7 @@
             color: "#2980B9",
             gravity: 2,
         });
+        //Paddle Two
         const paddleTwo = new Element({
             x: 20,
             y: 230,
@@ -46,6 +57,7 @@
             gravity: 2,
         });
 
+        //Ball constructor
         class Ball{
             constructor(x, y, x_velocity, y_velocity, radius, angle1, angle2, angle3, angle4, angle_vel, gravity, bounce){
                 this.x = x || 250;
@@ -114,24 +126,23 @@
         }
 
         function drawElement(element){
-            ctx.fillStyle = "#2980B9";
-            ctx.fillRect(element.x, element.y, element.width, element.height);
+            ctx.fillStyle = "#2980B9"; //fills the paddle with this blue color
+            ctx.fillRect(element.x, element.y, element.width, element.height); //fills the paddle
         }
 
         function drawElements(){
             console.log("Drawn elements!");
-            // ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawElement(paddleOne);
-            drawElement(paddleTwo);
+            drawElement(paddleOne); //call the draw method for paddle One
+            drawElement(paddleTwo); //call the draw method for paddle Two
         }
 
+        //Repeat me function will continuously run, updating the canvas accordingly
         function repeatme(){
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             b1.draw();
             b1.move();
             drawElements();
             window.requestAnimationFrame(repeatme);
-           
         }
         const b1 = new Ball();
         repeatme();
