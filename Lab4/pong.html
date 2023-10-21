@@ -104,6 +104,21 @@
             user.y = evt.clientY - rect.top - user.height/2;
         }
 
+        //collision detection
+        function collision(b,p){
+            b.top = b.y - b.radius;
+            b.bottom = b.y + b.radius;
+            b.left = b.x - b.radius;
+            b.right = b.x + b.radius;
+
+            p.top = p.y;
+            p.bottom = p.y + p.height;
+            p.left = p.x;
+            p.right = p.x + p.width;
+
+            return b.right > p.left && b.bottom > p.top && b.left < p.right && b.top < p.bottom;
+        }
+
         //reset Ball
         function resetBall(){
             ball.x = canvas.width/2;
@@ -120,6 +135,29 @@
 
             if(ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0){
                 ball.y_vel = -ball.y_vel;
+            }
+
+            let player = (ball.x < canvas.width/2) ? user: ai;
+
+            if(collision(ball, player)){
+                //wehre the ball hits the player
+                let collidePoint = ball.y - (player.y + player.height);
+            
+                //normalization
+                collidePoint = collidePoint/(player.height/2);
+            
+                //calculate angle in radians
+                let angleRad = collidePoint * m.PI/4;
+            
+                //direction of the ball when hit
+                let direction = (ball.x < canvas.width/2) ? 1: -1;
+            
+                //change vel x & y
+                ball.x_vel = direction * ball.speed * m.cos(angleRad);
+                ball.y_vel = direction * ball.speed * m.sin(angleRad);
+            
+                //everytime the ball hits a paddle, we increase the speed
+                ball.speed += 0.5;
             }
 
             //calls reset function when ball reaches edge of canvas
