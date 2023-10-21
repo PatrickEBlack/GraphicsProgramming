@@ -104,6 +104,15 @@
             user.y = evt.clientY - rect.top - user.height/2;
         }
 
+        //reset Ball
+        function resetBall(){
+            ball.x = canvas.width/2;
+            ball.y = canvas.width/2;
+
+            ball.speed = 5;
+            ball.x_vel = -ball.x_vel;
+        }
+
         //update function
         function update(){
             ball.x += ball.x_vel;
@@ -113,6 +122,16 @@
                 ball.y_vel = -ball.y_vel;
             }
 
+            //calls reset function when ball reaches edge of canvas
+            if(ball.x - ball.radius < 0){
+                //ai scored
+                ai.score++;
+                resetBall();
+            }else if(ball.x + ball.radius > canvas.width){
+                //user scored
+                user.score++;
+                resetBall();
+            }
         }
 
         //game initialization
