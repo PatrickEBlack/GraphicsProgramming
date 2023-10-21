@@ -95,6 +95,15 @@
             drawCircle(ball.x, ball.y, ball.radius, ball.color);
         }
 
+        //control users paddle
+        canvas.addEventListener("mousemove", movePaddle);
+
+        function movePaddle(evt){
+            let rect = canvas.getBoundingClientRect();
+
+            user.y = evt.clientY - rect.top - user.height/2;
+        }
+
         //update function
         function update(){
             ball.x += ball.x_vel;
