@@ -45,13 +45,29 @@
             speed: 5,
             x_vel: 5,
             y_vel: 5,
-            color: "RED",
+            color: "RED"
         }
 
         //Draw Rectangle
         function drawRect(x, y, width, height, color){
             ctx.fillStyle = color;
             ctx.fillRect(x, y, width, height);
+        }
+
+        //create the net
+        const net = {
+            x: canvas.width/2 - 1,
+            y: 0,
+            width: 2,
+            height: 10,
+            color: "RED"
+        }
+
+        //draw net
+        function drawNet(){
+           for(let i = 0; i <= canvas.height; i += 15){
+               drawRect(net.x, net.y + i, net.width, net.height, net.color);
+           }
         }
 
         //Draw Circle
@@ -67,6 +83,9 @@
         function render(){
             //clear canvas
             drawRect(0, 0, canvas.width, canvas.height, "WHITE");
+
+            //draw the net
+            drawNet();
 
             //draw the paddles
             drawRect(user.x, user.y, user.width, user.height, user.color);
