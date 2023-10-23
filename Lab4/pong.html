@@ -79,6 +79,13 @@
             ctx.fill();
         }
 
+        //Draw Text
+        function drawText(text, x, y, color){
+            ctx.fillStyle = color;
+            ctx.font = "30px Sans-Serif";
+            ctx.fillText(text, x, y);
+        }
+
         //render the game
         function render(){
             //clear canvas
@@ -86,6 +93,10 @@
 
             //draw the net
             drawNet();
+
+            //draw score
+            drawText(user.score, canvas.width/4, canvas.height/5, "RED");
+            drawText(ai.score, 3*canvas.width/4, canvas.height/5, "RED");
 
             //draw the paddles
             drawRect(user.x, user.y, user.width, user.height, user.color);
