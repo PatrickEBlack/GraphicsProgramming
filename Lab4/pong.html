@@ -11,6 +11,7 @@
     </style>
 </head>
 <body>
+    <h1><i>Patrick Black</i> - G00410388</h1>
     <canvas id="PongGame" style="background-color:white"></canvas>
     <script type="text/javascript">
         const canvas = document.getElementById("PongGame");
@@ -218,6 +219,8 @@
             //Movement keys for AI
             if(key == "w" && ai.y-ai.gravity > 0) ai.y -= ai.gravity * 4;
             else if(key == "s" && ai.y + ai.height + ai.gravity < canvas.height) ai.y += ai.gravity * 4;
+
+            if(key == "m")ball.speed += 1;
         }
 
         //game initialization
