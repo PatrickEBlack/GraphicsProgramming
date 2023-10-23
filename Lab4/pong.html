@@ -19,6 +19,9 @@
         canvas.height = 400; //Applies Width to the canvas
         var m = Math;
 
+        //Event listener for key press
+        window.addEventListener("keypress", doKeyDown, false);
+     
         //Create paddle
         const user = {
             x: 0,
@@ -34,6 +37,7 @@
             width: 10,
             height: 100,
             color: "RED",
+            gravity: 2,
             score: 0
         }
 
@@ -45,7 +49,12 @@
             speed: 5,
             x_vel: 5,
             y_vel: 5,
-            color: "RED"
+            color: "RED",
+            angle1: (m.PI/4 * 1),
+            angle2: (m.PI/4 * -3),
+            angle3: (m.PI/4 * -1),
+            angle4: (m.PI/4 * 3),
+            angle_vel: 0.05
         }
 
         //Draw Rectangle
@@ -72,11 +81,37 @@
 
         //Draw Circle
         function drawCircle(x, y, radius, color){
-            ctx.fillStyle = color;
-            ctx.beginPath();
-            ctx.arc(x, y, radius, 0, 2*m.PI, false)
-            ctx.closePath();
-            ctx.fill();
+            // ctx.fillStyle = color;
+            // ctx.beginPath();
+            // ctx.arc(x, y, radius, 0, 2*m.PI, false)
+            // ctx.closePath();
+            // ctx.fill();
+
+            ctx.beginPath(); //creating circle
+            ctx.arc(x, y, radius, 0, 2 * m.PI);
+            ctx.strokeStyle = 'red';
+            ctx.stroke();
+
+            //Determining where the lines should be placed within the circle
+            var xOC = (radius * m.cos(angle1) + x);
+            var yOC = (radius * m.sin(angle1) + y);
+            var xOV = (radius * m.cos(angle2) + x);
+            var yOV = (radius * m.sin(angle2) + y);
+            var xOX = (radius * m.cos(angle3) + x);
+            var yOX = (radius * m.sin(angle3) + y);
+            var xOZ = (radius * m.cos(angle4) + x);
+            var yOZ = (radius * m.sin(angle4) + y);
+
+            //Drawing Lines on The circle
+            ctx.moveTo(x, y);
+            ctx.lineTo(xOC, yOC); // Angle1
+            ctx.moveTo(x, y);
+            ctx.lineTo(xOV, yOV); // Angle2
+            ctx.moveTo(x, y);
+            ctx.lineTo(xOX, yOX); // Angle3
+            ctx.moveTo(x, y);
+            ctx.lineTo(xOZ, yOZ); // Angle4
+            ctx.stroke();
         }
 
         //Draw Text
@@ -181,6 +216,13 @@
                 user.score++;
                 resetBall();
             }
+        }
+
+        function doKeyDown(e){
+            const key = e.key;
+            //Movement keys for Player Two
+            if(key == "w" && ai.y-ai.gravity > 0) ai.y -= ai.gravity * 4;
+            else if(key == "s" && ai.y + ai.height + ai.gravity < canvas.height) ai.y += ai.gravity * 4;
         }
 
         //game initialization
