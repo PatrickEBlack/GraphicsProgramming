@@ -11,7 +11,7 @@
         var scene = new THREE.Scene();
 
         // Create a tetrahedron and add to the scene
-        var material = new THREE.MeshBasicMaterial({color: 0xff00f0, wireframe: false});
+        var material = new THREE.MeshLambertMaterial({color: 0xff00f0, wireframe: false}); //MeshLambert removes shine/glare from object
         var geometry = new THREE.TetrahedronGeometry(1, 0); 
         var tetrahedron = new THREE.Mesh(geometry, material);
         
