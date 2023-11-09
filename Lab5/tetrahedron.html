@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Three.js Tetrahedron Example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        // Set the scene
+        var scene = new THREE.Scene();
+
+        // Create a tetrahedron and add to the scene
+        var material = new THREE.MeshBasicMaterial({color: 0xff00f0});
+        var geometry = new THREE.TetrahedronGeometry(1, 0); 
+        var tetrahedron = new THREE.Mesh(geometry, material);
+        
+        // Adds tetrahedron to the scene
+        scene.add(tetrahedron);
+
+        // Add a camera
+        var camera = new THREE.PerspectiveCamera(80, window.innerWidth/window.innerHeight); //F.O.V set to 80
+        camera.position.z = 5;
+
+        // Add renderer
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Animation loop function
+        function repeatMe() {
+            requestAnimationFrame(repeatMe);
+
+            // Code to rotate tetrahedron
+            tetrahedron.rotation.x += 0.01;
+            tetrahedron.rotation.y += 0.01;
+
+            renderer.render(scene, camera);
+        }
+
+        // Call the loop function
+        repeatMe();
+    </script>
+</body>
+</html>
