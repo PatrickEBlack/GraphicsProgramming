@@ -32,6 +32,11 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
+        // Translation
+        var velocity = 0.01;
+        var direction = 1;
+        var end = 2;
+        
         // Animation loop function
         function repeatMe() {
             requestAnimationFrame(repeatMe);
@@ -39,6 +44,12 @@
             // Code to rotate tetrahedron
             tetrahedron.rotation.x += 0.01;
             tetrahedron.rotation.y += 0.01;
+            
+            // Translation
+            tetrahedron.position.x += velocity * direction;
+
+            // Reverse Translation
+            if(tetrahedron.position.x > end || tetrahedron.position.x < -end) direction *= -1;
 
             renderer.render(scene, camera);
         }
