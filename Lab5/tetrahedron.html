@@ -11,12 +11,17 @@
         var scene = new THREE.Scene();
 
         // Create a tetrahedron and add to the scene
-        var material = new THREE.MeshBasicMaterial({color: 0xff00f0, wireframe: true});
+        var material = new THREE.MeshBasicMaterial({color: 0xff00f0, wireframe: false});
         var geometry = new THREE.TetrahedronGeometry(1, 0); 
         var tetrahedron = new THREE.Mesh(geometry, material);
         
         // Adds tetrahedron to the scene
         scene.add(tetrahedron);
+
+        // Add spotlight
+        var spotlight = new THREE.SpotLight(0xffffff);
+        spotlight.position.set(1, 0.5, 1);
+        scene.add(spotlight);
 
         // Add a camera
         var camera = new THREE.PerspectiveCamera(80, window.innerWidth/window.innerHeight); //F.O.V set to 80
