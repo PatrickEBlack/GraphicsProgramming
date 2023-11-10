@@ -7,16 +7,36 @@
 </head>
 <body>
     <script type="text/javascript">
+        // Tetrahedron class
+        class Tetrahedron {
+            constructor() {
+                this.material = new THREE.MeshLambertMaterial({color: 0xff00f0, wireframe: false});
+                this.geometry = new THREE.TetrahedronGeometry(1, 0);
+                this.mesh = new THREE.Mesh(this.geometry, this.material);
+                this.velocity = 0.01;
+                this.direction = 1;
+                this.end = 2;
+            }
+
+            update() {
+                // Rotate tetrahedron
+                this.mesh.rotation.x += 0.01;
+                this.mesh.rotation.y += 0.01;
+
+                // Translate tetrahedron
+                this.mesh.position.x += this.velocity * this.direction;
+
+                // Reverse translation direction at boundaries
+                if (this.mesh.position.x > this.end || this.mesh.position.x < -this.end) {
+                    this.direction *= -1;
+                }
+            }
+        }
+
         // Set the scene
         var scene = new THREE.Scene();
-
-        // Create a tetrahedron and add to the scene
-        var material = new THREE.MeshLambertMaterial({color: 0xff00f0, wireframe: false}); //MeshLambert removes shine/glare from object
-        var geometry = new THREE.TetrahedronGeometry(1, 0); 
-        var tetrahedron = new THREE.Mesh(geometry, material);
-        
-        // Adds tetrahedron to the scene
-        scene.add(tetrahedron);
+        var tetrahedron = new Tetrahedron();
+        scene.add(tetrahedron.mesh);
 
         // Add spotlight
         var spotlight = new THREE.SpotLight(0xffffff);
@@ -24,7 +44,7 @@
         scene.add(spotlight);
 
         // Add a camera
-        var camera = new THREE.PerspectiveCamera(80, window.innerWidth/window.innerHeight); //F.O.V set to 80
+        var camera = new THREE.PerspectiveCamera(80, window.innerWidth/window.innerHeight);
         camera.position.z = 5;
 
         // Add renderer
@@ -32,24 +52,12 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Translation
-        var velocity = 0.01;
-        var direction = 1;
-        var end = 2;
-        
         // Animation loop function
         function repeatMe() {
             requestAnimationFrame(repeatMe);
 
-            // Code to rotate tetrahedron
-            tetrahedron.rotation.x += 0.01;
-            tetrahedron.rotation.y += 0.01;
-            
-            // Translation
-            tetrahedron.position.x += velocity * direction;
-
-            // Reverse Translation
-            if(tetrahedron.position.x > end || tetrahedron.position.x < -end) direction *= -1;
+            // Update tetrahedron
+            tetrahedron.update();
 
             renderer.render(scene, camera);
         }
