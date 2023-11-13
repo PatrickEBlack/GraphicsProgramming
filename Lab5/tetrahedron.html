@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Three.js Tetrahedron Example</title>
+    <title>Three.js Tetrahedron with Shadow Example</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
@@ -13,9 +13,12 @@
                 this.material = new THREE.MeshLambertMaterial({color: 0xff00f0, wireframe: false});
                 this.geometry = new THREE.TetrahedronGeometry(1, 0);
                 this.mesh = new THREE.Mesh(this.geometry, this.material);
-                this.velocity = 0.01;
-                this.direction = 1;
-                this.end = 2;
+                this.velocity = 0.01; //Speed
+                this.direction = 1; // Direction, (-1 / 1)
+                this.end = 2; // Boundary of tetrahedron
+
+                // Enable shadow casting
+                this.mesh.castShadow = true;
             }
 
             update() {
@@ -38,18 +41,34 @@
         var tetrahedron = new Tetrahedron();
         scene.add(tetrahedron.mesh);
 
-        // Add spotlight
+        // Add plane to project shadow
+        var planeGeometry = new THREE.PlaneGeometry(5, 5);
+        var planeMaterial = new THREE.MeshLambertMaterial({color: 0x82E0AA});
+        var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.rotation.x = -Math.PI / 2;
+        plane.position.y = -1;
+        plane.receiveShadow = true; // Enable shadow receiving
+        scene.add(plane);
+
+        // Add spotlight with shadow
         var spotlight = new THREE.SpotLight(0xffffff);
-        spotlight.position.set(1, 0.5, 1);
+        spotlight.position.set(0.1, 1, 1); //Setting spotlight position
+        spotlight.castShadow = true; // Enable shadow casting
         scene.add(spotlight);
+
+        // Add camera helper for the spotlight
+        var spotlightHelper = new THREE.CameraHelper(spotlight.shadow.camera);
+        spotlightHelper.visible = false; //Set to false just until I finish working on plane
+        scene.add(spotlightHelper);
 
         // Add a camera
         var camera = new THREE.PerspectiveCamera(80, window.innerWidth/window.innerHeight);
         camera.position.z = 5;
 
         // Add renderer
-        var renderer = new THREE.WebGLRenderer();
+        var renderer = new THREE.WebGLRenderer({antialias: true});
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true; // Enable shadow maps in the renderer
         document.body.appendChild(renderer.domElement);
 
         // Animation loop function
@@ -62,7 +81,7 @@
             renderer.render(scene, camera);
         }
 
-        // Call the loop function
+        // Call the repeatMe function
         repeatMe();
     </script>
 </body>
