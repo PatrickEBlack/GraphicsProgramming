@@ -16,7 +16,10 @@
                 this.velocity = 0.01; //Speed
                 this.direction = 1; // Direction, (-1 / 1)
                 this.end = 2; // Boundary of tetrahedron
-
+                this.gravity = 0.005;
+                this.bounce = 0.01;
+                this.bounceBool = false;
+                
                 // Enable shadow casting
                 this.mesh.castShadow = true;
             }
@@ -29,11 +32,30 @@
                 // Translate tetrahedron
                 this.mesh.position.x += this.velocity * this.direction;
 
+                // Apply gravity
+                if (this.bounceBool == false) {
+                    this.mesh.position.y -= this.gravity;
+                } 
+                else {
+                    this.mesh.position.y += this.bounce;
+                }
+            
+                // Collision Detection
+                if (this.mesh.position.y <= -1) {
+                    this.bounceBool = true;
+                }
+            
+                // Reset after bounce reaches peak
+                if (this.bounceBool && this.mesh.position.y >= 0) {
+                    this.bounceBool = false;
+                }
+            
                 // Reverse translation direction at boundaries
                 if (this.mesh.position.x > this.end || this.mesh.position.x < -this.end) {
                     this.direction *= -1;
                 }
             }
+
         }
 
         // Set the scene
