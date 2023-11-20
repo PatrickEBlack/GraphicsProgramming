@@ -45,13 +45,15 @@
             const height = 400 - margin.top - margin.bottom;
 
             // Create x and y scales
-            const parseTime = d3.timeParse("%Y-%m-%d"); // Changed to match the date format in JSON
-            const xScale = d3.scaleTime()
-                .domain(d3.extent(data, d => parseTime(d.Date))) // Changed to 'Date'
+            const parseTime = d3.timeParse("%Y-%m-%d"); // Date Format
+            //xscale
+            const xScale = d3.scaleTime() 
+                .domain(d3.extent(data, d => parseTime(d.Date)))
                 .range([0, width]);
 
+            //yscale
             const yScale = d3.scaleLinear()
-                .domain([300, d3.max(data, d => d.Average)]) // Changed to 'Average'
+                .domain([300, d3.max(data, d => d.Average)])
                 .range([height, 0]);
 
 
@@ -76,7 +78,7 @@
                 .attr("text-anchor", "end")
                 .attr("x", width)
                 .attr("y", -6)
-                .text("Present"); 
+                .text("Present");
 
             // Append the y-axis to the SVG and add label for it
             svg.append("g")
@@ -87,27 +89,27 @@
                 .attr("transform", "rotate(-90)")
                 .attr("y", 5 - margin.left) // Moves the label to the left of the y-axis
                 .attr("x", 0 - (height / 2)) // Centers the label vertically
-                .attr("dy", "1em") // Provides some padding from the y-axis
-                .attr("text-anchor", "middle") // Ensures that the text is centered at the x, y position
+                .attr("dy", "4em") // Provides some padding from the y-axis 
+                .attr("text-anchor", "middle") // Center Text
                 .text("CO2 Concentration");
 
 
-            // Append the chart label under the x-axis
+            // Chart Label Under X Asix
             svg.append("text")
                 .attr("class", "chart-label")
                 .attr("text-anchor", "middle")
                 .attr("x", width / 2)
-                .attr("y", height + margin.bottom - 1) // This positions the label below the x-axis line
+                .attr("y", height + margin.bottom - 1) // Position Label below X-Axis
                 .text("CO2 Concentration Over Time");
 
 
-            // Define a line generator
+            // Line generator for data
             const line = d3.line()
                 .x(d => xScale(parseTime(d.Date)))
                 .y(d => yScale(d.Average))
                 .curve(d3.curveMonotoneX);
 
-            // Append the line chart to the SVG
+            // Line chart for SVJ
             svg.append("path")
                 .datum(data)
                 .attr("class", "line")
@@ -115,6 +117,21 @@
                 .style("fill", "none")
                 .style("stroke", "red")
                 .style("stroke-width", "2px");
+
+            // Line generator for trend line
+            const trendLine = d3.line()
+                .x(d => xScale(parseTime(d.Date)))
+                .y(d => yScale(d.Trend))
+                .curve(d3.curveMonotoneX); // or use curveLinear if you want a straight line trend
+
+            // Trend Line Chart
+            svg.append("path")
+                .datum(data)
+                .attr("class", "trend-line")
+                .attr("d", trendLine)
+                .style("stroke", "blue") // Set the trend line color to blue
+                .style("stroke-width", "2px") // Set the trend line stroke width
+                .style("fill", "none");
         }
 
         // Fetch the JSON data and call the plotCO2Data function
