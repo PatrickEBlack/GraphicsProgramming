@@ -18,46 +18,51 @@
     <h1>PatrickBlack - G00410388</h1>
     <script type="text/javascript">
 
+        // Define a function to plot CO2 data
         function plotCO2Data(data) {
-            //SVJ setup
+            // Setup the SVG size and margins
             const margin = { top: 20, right: 20, bottom: 40, left: 40 };
             const width = 800 - margin.left - margin.right;
             const height = 400 - margin.top - margin.bottom;
 
-            const parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S");
-
+            // Create x and y scales
+            const parseTime = d3.timeParse("%Y-%m-%d"); // Changed to match the date format in JSON
             const xScale = d3.scaleTime()
-                .domain(d3.extent(data, d => parseTime(d.time)))
+                .domain(d3.extent(data, d => parseTime(d.Date))) // Changed to 'Date'
                 .range([0, width]);
 
             const yScale = d3.scaleLinear()
-                .domain([0, d3.max(data, d => d.CO2)])
+                .domain([0, d3.max(data, d => d.Average)]) // Changed to 'Average'
                 .range([height, 0]);
 
-            //Create X & Y axis
-            const yAxis = d3.axisLeft(yScale).ticks(5);
-            const xAxis = d3.axisBottom(xScale).ticks(5);
 
+            // Create x and y axes
+            const xAxis = d3.axisBottom(xScale).ticks(5); // Specify the number of ticks
+            const yAxis = d3.axisLeft(yScale).ticks(5); // Specify the number of ticks
+
+            // Add your D3.js code for data visualization here
+            // Append an SVG element to the webpage
             const svg = d3.select("body").append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
                 .attr("transform", `translate(${margin.left},${margin.top})`);
 
-            // Add x and y axes to the SVG
+            // Append the x-axis to the SVG
             svg.append("g")
                 .attr("class", "x-axis")
                 .attr("transform", `translate(0,${height})`)
                 .call(xAxis);
 
+            // Append the y-axis to the SVG
             svg.append("g")
                 .attr("class", "y-axis")
                 .call(yAxis);
 
             // Define a line generator
             const line = d3.line()
-                .x(d => xScale(parseTime(d.time)))
-                .y(d => yScale(d.CO2))
+                .x(d => xScale(parseTime(d.Date))) // Changed to 'Date'
+                .y(d => yScale(d.Average)) // Changed to 'Average'
                 .curve(d3.curveMonotoneX);
 
             // Append the line chart to the SVG
@@ -65,18 +70,16 @@
                 .datum(data)
                 .attr("class", "line")
                 .attr("d", line)
-                .style("stroke", "blue"); // Adjust the line color as needed
-
-            //Console.log data from data.json
-            console.log(data);
-
+                .style("stroke", "red"); // Adjust the line color as needed
         }
 
+        // Fetch the JSON data and call the plotCO2Data function
         fetch('./data.json')
             .then(res => res.json())
             .then(data => {
                 plotCO2Data(data);
             });
+
     </script>
 </body>
 
