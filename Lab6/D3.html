@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,18 +13,19 @@
     <!-- jQuery Library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
     <h1>PatrickBlack - G00410388</h1>
     <script type="text/javascript">
 
-        function plotCO2Data(data){
+        function plotCO2Data(data) {
             //SVJ setup
-            const margin = {top: 20, right: 20, bottom: 40, left: 40};
+            const margin = { top: 20, right: 20, bottom: 40, left: 40 };
             const width = 800 - margin.left - margin.right;
             const height = 400 - margin.top - margin.bottom;
 
             const parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S");
-            
+
             const xScale = d3.scaleTime()
                 .domain(d3.extent(data, d => parseTime(d.time)))
                 .range([0, width]);
@@ -36,6 +38,35 @@
             const yAxis = d3.axisLeft(yScale).ticks(5);
             const xAxis = d3.axisBottom(xScale).ticks(5);
 
+            const svg = d3.select("body").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            // Add x and y axes to the SVG
+            svg.append("g")
+                .attr("class", "x-axis")
+                .attr("transform", `translate(0,${height})`)
+                .call(xAxis);
+
+            svg.append("g")
+                .attr("class", "y-axis")
+                .call(yAxis);
+
+            // Define a line generator
+            const line = d3.line()
+                .x(d => xScale(parseTime(d.time)))
+                .y(d => yScale(d.CO2))
+                .curve(d3.curveMonotoneX);
+
+            // Append the line chart to the SVG
+            svg.append("path")
+                .datum(data)
+                .attr("class", "line")
+                .attr("d", line)
+                .style("stroke", "blue"); // Adjust the line color as needed
+
             //Console.log data from data.json
             console.log(data);
 
@@ -45,7 +76,8 @@
             .then(res => res.json())
             .then(data => {
                 plotCO2Data(data);
-        });
+            });
     </script>
 </body>
+
 </html>
