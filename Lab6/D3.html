@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3.js Demo</title>
+    <style type="text/css">
+
+    </style>
+    <!-- D3.js Library -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <!-- jQuery Library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        fetch('./data.json')
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+            });
+    </script>
+</body>
+</html>
