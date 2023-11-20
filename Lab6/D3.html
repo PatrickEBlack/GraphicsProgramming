@@ -6,7 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D3.js Demo</title>
     <style type="text/css">
+        .axis-label {
+            font-size: 14px;
+            /* Adjust the font size for axis labels */
+            fill: #000;
+            /* Font color */
+        }
 
+        .chart-label {
+            font-size: 16px;
+            /* Adjust the font size for the chart label */
+            font-weight: bold;
+            /* Make it bold */
+            fill: #000;
+            /* Font color */
+        }
+
+        .tick text {
+            font-size: 12px;
+            /* Adjust the font size for the tick labels */
+        }
     </style>
     <!-- D3.js Library -->
     <script src="https://d3js.org/d3.v5.min.js"></script>
@@ -32,15 +51,14 @@
                 .range([0, width]);
 
             const yScale = d3.scaleLinear()
-                .domain([0, d3.max(data, d => d.Average)]) // Changed to 'Average'
+                .domain([300, d3.max(data, d => d.Average)]) // Changed to 'Average'
                 .range([height, 0]);
 
 
-            // Create x and y axes
+            // Create x and y axis
             const xAxis = d3.axisBottom(xScale).ticks(5); // Specify the number of ticks
             const yAxis = d3.axisLeft(yScale).ticks(5); // Specify the number of ticks
 
-            // Add your D3.js code for data visualization here
             // Append an SVG element to the webpage
             const svg = d3.select("body").append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -48,21 +66,45 @@
                 .append("g")
                 .attr("transform", `translate(${margin.left},${margin.top})`);
 
-            // Append the x-axis to the SVG
+            // Append the x-axis to the SVG and add label for it
             svg.append("g")
                 .attr("class", "x-axis")
                 .attr("transform", `translate(0,${height})`)
-                .call(xAxis);
+                .call(xAxis)
+                .append("text")
+                .attr("class", "axis-label")
+                .attr("text-anchor", "end")
+                .attr("x", width)
+                .attr("y", -6)
+                .text("Present"); 
 
-            // Append the y-axis to the SVG
+            // Append the y-axis to the SVG and add label for it
             svg.append("g")
                 .attr("class", "y-axis")
-                .call(yAxis);
+                .call(yAxis)
+                .append("text")
+                .attr("class", "axis-label")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 5 - margin.left) // Moves the label to the left of the y-axis
+                .attr("x", 0 - (height / 2)) // Centers the label vertically
+                .attr("dy", "1em") // Provides some padding from the y-axis
+                .attr("text-anchor", "middle") // Ensures that the text is centered at the x, y position
+                .text("CO2 Concentration");
+
+
+            // Append the chart label under the x-axis
+            svg.append("text")
+                .attr("class", "chart-label")
+                .attr("text-anchor", "middle")
+                .attr("x", width / 2)
+                .attr("y", height + margin.bottom - 1) // This positions the label below the x-axis line
+                .text("CO2 Concentration Over Time");
+
 
             // Define a line generator
             const line = d3.line()
-                .x(d => xScale(parseTime(d.Date))) // Changed to 'Date'
-                .y(d => yScale(d.Average)) // Changed to 'Average'
+                .x(d => xScale(parseTime(d.Date)))
+                .y(d => yScale(d.Average))
                 .curve(d3.curveMonotoneX);
 
             // Append the line chart to the SVG
@@ -70,7 +112,9 @@
                 .datum(data)
                 .attr("class", "line")
                 .attr("d", line)
-                .style("stroke", "red"); // Adjust the line color as needed
+                .style("fill", "none")
+                .style("stroke", "red")
+                .style("stroke-width", "2px");
         }
 
         // Fetch the JSON data and call the plotCO2Data function
