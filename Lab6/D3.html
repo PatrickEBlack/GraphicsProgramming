@@ -14,11 +14,37 @@
 </head>
 <body>
     <script type="text/javascript">
+
+        function plotCO2Data(data){
+            //SVJ setup
+            const margin = {top: 20, right: 20, bottom: 40, left: 40};
+            const width = 800 - margin.left - margin.right;
+            const height = 400 - margin.top - margin.bottom;
+
+            const parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S");
+            
+            const xScale = d3.scaleTime()
+                .domain(d3.extent(data, d => parseTime(d.time)))
+                .range([0, width]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, d3.max(data, d => d.CO2)])
+                .range([height, 0]);
+
+            //Create X & Y axis
+            const yAxis = d3.axisLeft(yScale).ticks(5);
+            const xAxis = d3.axisBottom(xScale).ticks(5);
+
+            //Console.log data from data.json
+            console.log(data);
+
+        }
+
         fetch('./data.json')
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-            });
+                plotCO2Data(data);
+        });
     </script>
 </body>
 </html>
