@@ -9,22 +9,30 @@ ncols = 1
 imgOrig = cv2.imread('ATU1.jpg') # Original Image
 imgGray = cv2.cvtColor(imgOrig, cv2.COLOR_BGR2GRAY) # Grayscale Image
 imgHarris = imgGray.copy() # Copy of Original ATU1.jpg
-dst = cv2.cornerHarris(imgGray, 2, 3, 0.1)
 
-# Corner Detection
-dst = cv2.dilate(dst, None)
-imgOrig[dst>0.01 * dst.max()]=[0, 0, 255]
-cv2.imshow('dst', imgOrig)
-if cv2.waitKey(0) & 0xff == 27:
-    cv2.destroyAllWindows()
+# Normalize to 8-bit
+gray_image = np.float32(imgGray)
 
-# threshold = 0.5; #number between 0 and 1
-# for i in range(len(dst)):
-#     for j in range(len(dst[i])):
-#         if dst[i][j] > (threshold*dst.max()):
-#             cv2.circle(imgHarris,(j,i),3,(255, 0, 0),-1)
+# Apply cv2.cornerHarris() function
+harris_corners = cv2.cornerHarris(imgGray, 2, 3, 0.04)
 
-# cv2.imshow('Harris', imgHarris)
+# Dilate corners for better marking
+harris_corners = cv2.dilate(harris_corners, None)
+
+# Define a threshold for extracting large corners
+threshold = 0.01 * harris_corners.max()
+
+# Iterate through all the corners and draw them
+for i in range(harris_corners.shape[0]):
+    for j in range(harris_corners.shape[1]):
+        if harris_corners[i, j] > threshold:
+            # Draw a red circle at each corner
+            cv2.circle(imgOrig, (j, i), 2, (0, 0, 255), -1)
+
+# Display the image with corners
+cv2.imshow('Harris Corners', imgOrig)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
 # plt.subplot(nrows, ncols, 1), plt.imshow(cv2.cvtColor(imgOrig, cv2.COLOR_BGR2RGB), cmap = 'gray') # Original
 # plt.title('Original'), plt.xticks([]), plt.yticks([])
