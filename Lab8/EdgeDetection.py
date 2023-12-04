@@ -7,16 +7,14 @@ from matplotlib import pyplot as plt
 nrows = 2
 ncols = 3
 
-# GrayScale
-imgOrig = cv2.imread('ATU.jpg')
-imgGray = cv2.cvtColor(imgOrig, cv2.COLOR_BGR2GRAY)
-img3by3 = cv2.GaussianBlur(imgGray,(3, 3), 0)
-img13by13 = cv2.GaussianBlur(imgGray,(13, 13), 0)
-
-# Edge Detection
+# Images
+imgOrig = cv2.imread('ATU.jpg') # Original Image
+imgGray = cv2.cvtColor(imgOrig, cv2.COLOR_BGR2GRAY) # Grayscale Image
+img3by3 = cv2.GaussianBlur(imgGray,(3, 3), 0) # 3 x 3 Blur
+img13by13 = cv2.GaussianBlur(imgGray,(13, 13), 0) # 13 x 13 Blur
 sobelHorizontal = cv2.Sobel(imgGray, cv2.CV_64F, 1, 0, ksize = 5) # x direction
 sobelVertical = cv2.Sobel(imgGray, cv2.CV_64F, 0, 1, ksize = 5) # y direction
-canny = cv2.Canny(imgGray, 100, 300)
+canny = cv2.Canny(imgGray, 70, 150) # Canny Edge Detection Image
 
 # Display Window - Matplotlib as Plt
 plt.subplot(nrows, ncols, 1), plt.imshow(cv2.cvtColor(imgOrig,cv2.COLOR_BGR2RGB), cmap = 'gray') # Original
@@ -39,5 +37,5 @@ plt.title('Sobel Sum'), plt.xticks([]), plt.yticks([])
 plt.subplot(nrows, ncols, 6), plt.imshow(canny, cmap = 'gray') # Canny Edge Detection
 plt.title('Canny Edge Image'), plt.xticks([]), plt.yticks([])
 
-plt.show()
+plt.show() # Displays the Output Window
 
