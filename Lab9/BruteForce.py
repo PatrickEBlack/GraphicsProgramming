@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 
-img1 = cv2.imread('ATU1.jpg', cv2.IMREAD_GRAYSCALE) # Query image
-img2 = cv2.imread('ATU2.jpg', cv2.IMREAD_GRAYSCALE) # Train image
+img1 = cv2.imread('cartman.jpg', cv2.IMREAD_GRAYSCALE) # Query image
+img2 = cv2.imread('cartman1.jpg', cv2.IMREAD_GRAYSCALE) # Train image
 
 # Initiate ORB Detector
 orb = cv2.ORB_create()
