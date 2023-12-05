@@ -11,9 +11,6 @@ imgGray = cv2.cvtColor(imgOrig, cv2.COLOR_BGR2GRAY) # Grayscale Image
 imgHarris = imgGray.copy() # Copy of GrayScale ATU1.jpg for Harris Corners
 imgShiTomasi = imgGray.copy() # Copy of GrayScale ATU1.jpg for Shi Tomasi Corners
 
-# Normalize to 8-bit
-gray_image = np.float32(imgGray)
-
 # Apply cv2.cornerHarris() function
 harris_corners = cv2.cornerHarris(imgGray, 2, 3, 0.04)
 
@@ -26,6 +23,18 @@ threshold = 0.01 * harris_corners.max()
 # Define Corners for ShiTomasi Detection
 corners = cv2.goodFeaturesToTrack(imgGray, 40, 0.01, 10)
 corners = np.int64(corners)
+
+#Initiate ORB Detector
+orb = cv2.ORB_create()
+
+# Find Key Points with ORB
+kp = orb.detect(imgOrig, None)
+
+# Compute the descriptors with ORB
+kp, des = orb.compute(imgOrig, kp)
+
+# Draw only key points location, not size and orientation
+imgORB = cv2.drawKeypoints(imgOrig, kp, None, color=(0, 255, 0), flags = 0)
 
 # Iterate through all the corners and draw them (HarrisCornerDetection)
 for i in range(harris_corners.shape[0]):
@@ -40,14 +49,7 @@ for i in corners:
     cv2.circle(imgOrig, (x, y), 4, 255, -1)
 
 # Display the image with corners
-cv2.imshow('Corner Detection', imgOrig)
+#cv2.imshow('Corner Detection', imgOrig) # Displays Harris and ShiTomasi Corners
+cv2.imshow('Corner Detection', imgORB) # Displays ORB Key Points
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-
-# plt.subplot(nrows, ncols, 1), plt.imshow(cv2.cvtColor(imgOrig, cv2.COLOR_BGR2RGB), cmap = 'gray') # Original
-# plt.title('Original'), plt.xticks([]), plt.yticks([])
-# plt.subplot(nrows, ncols, 2), plt.imshow(imgGray, cmap = 'gray') # Gray Scale
-# plt.title('Gray Scale'), plt.xticks([]), plt.yticks([])
-#plt.show() # Displays output Window
-
-#cv2.circle(imgHarris, (100, 100), 30, (255, 0, 0), -1) # Copied Image With Blue Cirlce
