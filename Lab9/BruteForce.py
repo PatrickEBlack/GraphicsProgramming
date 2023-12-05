@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 
+# Read in Images
 img1 = cv2.imread('cartman.jpg', cv2.IMREAD_GRAYSCALE) # Query image
 img2 = cv2.imread('cartman1.jpg', cv2.IMREAD_GRAYSCALE) # Train image
 
