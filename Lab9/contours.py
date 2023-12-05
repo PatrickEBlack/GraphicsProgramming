@@ -5,6 +5,8 @@ from matplotlib import pyplot as plt
 import random as rng
 import argparse
 
+# When running this program, a threshold of 18 is optimal
+
 rng.seed(12345)
 
 def thresh_callback(val):
