@@ -6,7 +6,8 @@ from matplotlib import pyplot as plt
 nrows = 2
 ncols = 3
 
-imgOrig = cv2.imread('ATU1.jpg') # Original Image
+imgOrig = cv2.imread('cartman.jpg') # Original Image
+# imgOrig = cv2.imread('cartman.jpg') # Cartman Version
 imgGray = cv2.cvtColor(imgOrig, cv2.COLOR_BGR2GRAY) # Grayscale Image
 imgHarris = imgGray.copy() # Copy of GrayScale ATU1.jpg for Harris Corners
 imgShiTomasi = imgGray.copy() # Copy of GrayScale ATU1.jpg for Shi Tomasi Corners
