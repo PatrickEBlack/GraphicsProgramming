@@ -8,7 +8,8 @@ ncols = 1
 
 imgOrig = cv2.imread('ATU1.jpg') # Original Image
 imgGray = cv2.cvtColor(imgOrig, cv2.COLOR_BGR2GRAY) # Grayscale Image
-imgHarris = imgGray.copy() # Copy of Original ATU1.jpg
+imgHarris = imgGray.copy() # Copy of GrayScale ATU1.jpg for Harris Corners
+imgShiTomasi = imgGray.copy() # Copy of GrayScale ATU1.jpg for Shi Tomasi Corners
 
 # Normalize to 8-bit
 gray_image = np.float32(imgGray)
@@ -22,15 +23,24 @@ harris_corners = cv2.dilate(harris_corners, None)
 # Define a threshold for extracting large corners
 threshold = 0.01 * harris_corners.max()
 
-# Iterate through all the corners and draw them
+# Define Corners for ShiTomasi Detection
+corners = cv2.goodFeaturesToTrack(imgGray, 40, 0.01, 10)
+corners = np.int64(corners)
+
+# Iterate through all the corners and draw them (HarrisCornerDetection)
 for i in range(harris_corners.shape[0]):
     for j in range(harris_corners.shape[1]):
         if harris_corners[i, j] > threshold:
             # Draw a red circle at each corner
             cv2.circle(imgOrig, (j, i), 2, (0, 0, 255), -1)
 
+# Iterate through all the corners and draw them (ShiTomasiCornerDetection)
+for i in corners:
+    x, y = i.ravel()
+    cv2.circle(imgOrig, (x, y), 4, 255, -1)
+
 # Display the image with corners
-cv2.imshow('Harris Corners', imgOrig)
+cv2.imshow('Corner Detection', imgOrig)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
