@@ -3,6 +3,7 @@ import cv2
 from ultralytics import YOLO
 import os
 
+# Prevents Runtime error
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
 def run_tracker_in_thread(filename, model, file_index):
@@ -29,7 +30,7 @@ model1 = YOLO('yolov8n.pt')
 model2 = YOLO('yolov8n-seg.pt')
 
 # Define the cideo files for the trackers
-video_file1 = "traffic2.mp4" # Path to video file, 0 for webcam
+video_file1 = "traffic3.mp4" # Path to video file, 0 for webcam
 video_file2 = 0 # Path to video file, 0 for webcam, 1 for external camera
 
 # Create tracker threads
